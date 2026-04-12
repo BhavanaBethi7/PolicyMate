@@ -29,7 +29,7 @@ export default function Landing() {
           <div className="flex gap-4">
             <button
               onClick={() => navigate("/login")}
-              className="px-6 py-3 w-full bg-blue-600 text-white rounded-xl font-medium shadow-md hover:opacity-90 transition"
+              className="px-6 py-3 bg-blue-600 text-white rounded-xl font-medium shadow-md hover:opacity-90 transition"
             >
               Get Started
             </button>
@@ -47,7 +47,7 @@ export default function Landing() {
         <div className="bg-white border border-gray-200 p-8 rounded-2xl shadow-xl">
 
           <h2 className="text-xl font-semibold text-gray-800 mb-6">
-            Why choose SchemeSmart?
+            Why choose PolicyMate?
           </h2>
 
           <div className="space-y-5 text-gray-600">

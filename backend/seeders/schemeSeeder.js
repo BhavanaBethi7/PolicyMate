@@ -236,19 +236,31 @@ const dummySchemes = [
 
 const seedSchemes = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/schemesmart');
+    await mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/PolicyMate');
+    console.log('Connected to MongoDB');
     
     // Clear existing schemes
     await Scheme.deleteMany({});
-    console.log('Cleared existing schemes');
+    console.log('✓ Cleared existing schemes');
+    
+    // Add active field to all schemes
+    const schemesWithActive = dummySchemes.map(scheme => ({
+      ...scheme,
+      active: true
+    }));
     
     // Insert dummy schemes
-    await Scheme.insertMany(dummySchemes);
-    console.log(`Inserted ${dummySchemes.length} dummy schemes`);
+    const result = await Scheme.insertMany(schemesWithActive);
+    console.log(`✓ Inserted ${result.length} dummy schemes successfully`);
+    
+    // Verify insertion
+    const count = await Scheme.countDocuments({ active: true });
+    console.log(`✓ Total active schemes in database: ${count}`);
     
     mongoose.connection.close();
+    console.log('✓ Database connection closed');
   } catch (error) {
-    console.error('Error seeding schemes:', error);
+    console.error('❌ Error seeding schemes:', error.message);
     process.exit(1);
   }
 };

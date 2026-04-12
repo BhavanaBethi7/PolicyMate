@@ -123,20 +123,29 @@ const calculateSchemeMatch = (profile, scheme) => {
 const getEligibleSchemes = async (req, res) => {
   try {
     const userId = req.user.id;
+    console.log('Getting eligible schemes for user:', userId);
     
     // Get user profile (you'll need to implement this)
     const Profile = require('../models/Profile');
     const profile = await Profile.findOne({ userId });
     
     if (!profile) {
+      console.log('Profile not found for user:', userId);
       return res.status(404).json({
         success: false,
         message: 'Profile not found'
       });
     }
 
+    console.log('User profile found, checking eligibility...');
+
     // Get all active schemes
     const schemes = await Scheme.find({ active: true });
+    console.log(`Found ${schemes.length} active schemes`);
+    
+    if (schemes.length === 0) {
+      console.log('No active schemes found - need to seed data');
+    }
     
     // Calculate matches for all schemes
     const matches = schemes.map(scheme => calculateSchemeMatch(profile, scheme));
@@ -146,6 +155,8 @@ const getEligibleSchemes = async (req, res) => {
       .filter(match => match.isEligible)
       .sort((a, b) => b.matchPercentage - a.matchPercentage);
 
+    console.log(`Found ${eligibleSchemes.length} eligible schemes out of ${schemes.length}`);
+
     res.status(200).json({
       success: true,
       schemes: eligibleSchemes,
@@ -153,10 +164,11 @@ const getEligibleSchemes = async (req, res) => {
       eligibleCount: eligibleSchemes.length
     });
   } catch (error) {
-    console.error('Eligibility check error:', error);
+    console.error('Eligibility check error:', error.message);
     res.status(500).json({
       success: false,
-      message: 'Server error while checking eligibility'
+      message: 'Server error while checking eligibility',
+      error: error.message
     });
   }
 };
@@ -165,8 +177,10 @@ const getEligibleSchemes = async (req, res) => {
 const checkTempEligibility = async (req, res) => {
   try {
     const tempProfile = req.body;
+    console.log('Checking eligibility for temp profile:', tempProfile);
     
     if (!tempProfile.educationLevel || !tempProfile.category || !tempProfile.state) {
+      console.log('Missing required fields');
       return res.status(400).json({
         success: false,
         message: 'Education, category, and state are required'
@@ -175,6 +189,11 @@ const checkTempEligibility = async (req, res) => {
 
     // Get all active schemes
     const schemes = await Scheme.find({ active: true });
+    console.log(`Found ${schemes.length} active schemes`);
+    
+    if (schemes.length === 0) {
+      console.log('No active schemes found - need to seed data');
+    }
     
     // Calculate matches for all schemes
     const matches = schemes.map(scheme => calculateSchemeMatch(tempProfile, scheme));
@@ -184,6 +203,8 @@ const checkTempEligibility = async (req, res) => {
       .filter(match => match.isEligible)
       .sort((a, b) => b.matchPercentage - a.matchPercentage);
 
+    console.log(`Found ${eligibleSchemes.length} eligible schemes out of ${schemes.length}`);
+
     res.status(200).json({
       success: true,
       schemes: eligibleSchemes,
@@ -191,10 +212,11 @@ const checkTempEligibility = async (req, res) => {
       eligibleCount: eligibleSchemes.length
     });
   } catch (error) {
-    console.error('Temporary eligibility check error:', error);
+    console.error('Temporary eligibility check error:', error.message);
     res.status(500).json({
       success: false,
-      message: 'Server error while checking eligibility'
+      message: 'Server error while checking eligibility',
+      error: error.message
     });
   }
 };
@@ -237,8 +259,11 @@ const getAllSchemes = async (req, res) => {
     if (state) filter['eligibility.states'] = { $in: ['All India', state] };
     if (education) filter['eligibility.education'] = education;
 
+    console.log('Fetching schemes with filter:', filter);
     const schemes = await Scheme.find(filter)
       .sort({ featured: -1, createdAt: -1 });
+    
+    console.log(`Found ${schemes.length} schemes matching criteria`);
 
     res.status(200).json({
       success: true,
@@ -246,10 +271,11 @@ const getAllSchemes = async (req, res) => {
       total: schemes.length
     });
   } catch (error) {
-    console.error('Get all schemes error:', error);
+    console.error('Get all schemes error:', error.message);
     res.status(500).json({
       success: false,
-      message: 'Server error while fetching schemes'
+      message: 'Server error while fetching schemes',
+      error: error.message
     });
   }
 };
