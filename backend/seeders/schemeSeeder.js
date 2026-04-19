@@ -3,42 +3,169 @@ const mongoose = require('mongoose');
 
 const dummySchemes = [
   {
-    name: "PM Scholarship Scheme",
-    description: "Merit-based scholarship for meritorious students from economically weaker sections",
-    category: "Scholarship",
+    name: 'Central Sector Scheme of Scholarship for College and University Students',
+    description: 'Scholarship by Department of Higher Education for meritorious students pursuing regular college and university courses.',
+    category: 'Scholarship',
     eligibility: {
       education: ['12th', 'Undergraduate'],
-      categories: ['SC', 'ST', 'OBC', 'EWS'],
-      income: '<1L',
+      categories: ['General', 'OBC', 'SC', 'ST', 'EWS'],
+      income: '8L+',
       states: ['All India'],
       age: { min: 17, max: 25 },
       gender: 'Any',
       locationType: 'Any',
-      firstGraduate: 'Yes'
+      firstGraduate: 'Any'
     },
     benefits: [
-      'Up to INR 12,000 per annum',
-      'Renewable for up to 3 years',
-      'No service bond required'
+      'Financial assistance for higher education',
+      'Renewable subject to academic performance',
+      'Disbursal through Direct Benefit Transfer'
     ],
     applicationProcess: [
       { step: 1, description: 'Register on National Scholarship Portal' },
-      { step: 2, description: 'Fill application form with academic details' },
-      { step: 3, description: 'Upload income and caste certificates' },
-      { step: 4, description: 'Submit and wait for verification' }
+      { step: 2, description: 'Fill fresh application under central schemes' },
+      { step: 3, description: 'Upload required academic and bank documents' },
+      { step: 4, description: 'Submit and track institute/state verification status' }
     ],
-    officialLink: 'https://www.scholarships.gov.in',
-    applicationLink: 'https://scholarships.gov.in/fresh/login',
-    duration: '3 years',
-    amount: 'INR 12,000/year',
-    lastDate: '31st October 2024',
+    officialLink: 'https://scholarships.gov.in',
+    applicationLink: 'https://scholarships.gov.in',
+    duration: 'Course duration',
+    amount: 'As per scheme norms',
+    lastDate: 'As per annual notification',
     featured: true
   },
-  
   {
-    name: "Digital India Internship",
-    description: "Paid internship program for students interested in digital technologies and government initiatives",
-    category: "Internship",
+    name: 'Post Matric Scholarship for SC Students',
+    description: 'Central assistance for Scheduled Caste students studying in post-matric courses.',
+    category: 'Scholarship',
+    eligibility: {
+      education: ['12th', 'Diploma', 'Undergraduate', 'Postgraduate'],
+      categories: ['SC'],
+      income: '3-5L',
+      states: ['All India'],
+      age: { min: 16, max: 35 },
+      gender: 'Any',
+      locationType: 'Any',
+      firstGraduate: 'Any'
+    },
+    benefits: [
+      'Tuition and maintenance support',
+      'Applicable to recognized post-matric courses',
+      'Direct transfer of scholarship amount'
+    ],
+    applicationProcess: [
+      { step: 1, description: 'Apply through National Scholarship Portal' },
+      { step: 2, description: 'Select Post Matric SC scholarship scheme' },
+      { step: 3, description: 'Submit caste, income and admission proof' },
+      { step: 4, description: 'Complete institute verification and final submission' }
+    ],
+    officialLink: 'https://socialjustice.gov.in',
+    applicationLink: 'https://scholarships.gov.in',
+    duration: 'Academic year (renewable)',
+    amount: 'As per approved component',
+    lastDate: 'As per annual notification',
+    featured: true
+  },
+  {
+    name: 'AICTE Pragati Scholarship for Girls',
+    description: 'Scholarship for girl students admitted to technical diploma and degree programs in AICTE-approved institutions.',
+    category: 'Scholarship',
+    eligibility: {
+      education: ['Diploma', 'Undergraduate'],
+      categories: ['General', 'OBC', 'SC', 'ST', 'EWS'],
+      income: '8L+',
+      states: ['All India'],
+      age: { min: 16, max: 30 },
+      gender: 'Female',
+      locationType: 'Any',
+      firstGraduate: 'Any'
+    },
+    benefits: [
+      'Financial support for tuition and incidental expenses',
+      'Encourages women participation in technical education',
+      'Direct transfer to eligible beneficiaries'
+    ],
+    applicationProcess: [
+      { step: 1, description: 'Visit AICTE scholarship section on NSP' },
+      { step: 2, description: 'Submit academic and admission details' },
+      { step: 3, description: 'Upload income and category documents as applicable' },
+      { step: 4, description: 'Finalize submission before deadline' }
+    ],
+    officialLink: 'https://www.aicte-india.org',
+    applicationLink: 'https://scholarships.gov.in',
+    duration: 'Course duration (renewable)',
+    amount: 'As per AICTE notification',
+    lastDate: 'As per annual notification',
+    featured: true
+  },
+  {
+    name: 'AICTE Saksham Scholarship Scheme',
+    description: 'Scholarship support for differently-abled students pursuing technical education in AICTE-approved institutions.',
+    category: 'Scholarship',
+    eligibility: {
+      education: ['Diploma', 'Undergraduate'],
+      categories: ['General', 'OBC', 'SC', 'ST', 'EWS'],
+      income: '8L+',
+      states: ['All India'],
+      age: { min: 16, max: 30 },
+      gender: 'Any',
+      locationType: 'Any',
+      firstGraduate: 'Any'
+    },
+    benefits: [
+      'Financial assistance for technical education',
+      'Support for differently-abled students',
+      'Annual renewal subject to eligibility'
+    ],
+    applicationProcess: [
+      { step: 1, description: 'Apply through National Scholarship Portal' },
+      { step: 2, description: 'Choose AICTE Saksham scheme' },
+      { step: 3, description: 'Upload disability and admission certificates' },
+      { step: 4, description: 'Submit and track application status online' }
+    ],
+    officialLink: 'https://www.aicte-india.org',
+    applicationLink: 'https://scholarships.gov.in',
+    duration: 'Course duration (renewable)',
+    amount: 'As per AICTE notification',
+    lastDate: 'As per annual notification',
+    featured: false
+  },
+  {
+    name: 'National Apprenticeship Training Scheme (NATS)',
+    description: 'Government apprenticeship program for diploma and graduate students to gain practical industry experience.',
+    category: 'Internship',
+    eligibility: {
+      education: ['Diploma', 'Undergraduate'],
+      categories: ['General', 'OBC', 'SC', 'ST', 'EWS'],
+      income: 'Any',
+      states: ['All India'],
+      age: { min: 18, max: 35 },
+      gender: 'Any',
+      locationType: 'Any',
+      firstGraduate: 'Any'
+    },
+    benefits: [
+      'Stipend during apprenticeship period',
+      'Hands-on industrial training',
+      'Improved employability through practical experience'
+    ],
+    applicationProcess: [
+      { step: 1, description: 'Register on NATS portal' },
+      { step: 2, description: 'Complete profile and education details' },
+      { step: 3, description: 'Apply to apprenticeship opportunities' },
+      { step: 4, description: 'Join after selection by establishment' }
+    ],
+    officialLink: 'https://nats.education.gov.in',
+    applicationLink: 'https://nats.education.gov.in',
+    duration: '6 to 12 months',
+    amount: 'Stipend as per apprenticeship norms',
+    lastDate: 'Open throughout the year',
+    featured: true
+  },
+  {
+    name: 'Digital India Internship Scheme',
+    description: 'Internship opportunity under MeitY for students to work on digital governance and technology projects.',
+    category: 'Internship',
     eligibility: {
       education: ['Undergraduate', 'Postgraduate'],
       categories: ['General', 'OBC', 'SC', 'ST', 'EWS'],
@@ -50,187 +177,150 @@ const dummySchemes = [
       firstGraduate: 'Any'
     },
     benefits: [
-      'Monthly stipend of INR 10,000',
-      'Certificate of completion',
-      'Work experience in government projects'
+      'Exposure to digital governance initiatives',
+      'Certificate on successful completion',
+      'Stipend as per official notification'
     ],
     applicationProcess: [
-      { step: 1, description: 'Apply through Digital India portal' },
-      { step: 2, description: 'Submit resume and academic records' },
-      { step: 3, description: 'Online assessment test' },
-      { step: 4, description: 'Virtual interview and selection' }
+      { step: 1, description: 'Check internship announcements on Digital India portal' },
+      { step: 2, description: 'Submit online internship application' },
+      { step: 3, description: 'Provide academic and project profile' },
+      { step: 4, description: 'Attend screening/interview if shortlisted' }
     ],
-    officialLink: 'https://digitalindia.gov.in',
-    applicationLink: 'https://internship.digitalindia.gov.in',
-    duration: '6 months',
-    amount: 'INR 10,000/month',
-    lastDate: '15th November 2024',
+    officialLink: 'https://www.digitalindia.gov.in',
+    applicationLink: 'https://www.digitalindia.gov.in',
+    duration: '2 to 6 months',
+    amount: 'As per internship cycle',
+    lastDate: 'As per internship notification',
     featured: false
   },
-  
   {
-    name: "SSC Graduate Level Exam",
-    description: "Staff Selection Commission exam for various government posts in central government departments",
-    category: "Govt Job",
+    name: 'SSC Combined Graduate Level Examination (SSC CGL)',
+    description: 'National level exam by Staff Selection Commission for recruitment to Group B and Group C posts in central government departments.',
+    category: 'Govt Job',
     eligibility: {
       education: ['Undergraduate', 'Postgraduate'],
       categories: ['General', 'OBC', 'SC', 'ST', 'EWS'],
       income: 'Any',
       states: ['All India'],
-      age: { min: 20, max: 30 },
+      age: { min: 18, max: 32 },
       gender: 'Any',
       locationType: 'Any',
       firstGraduate: 'Any'
     },
     benefits: [
-      'Grade Pay starting from INR 4,200',
-      'Job security and pension benefits',
-      'Promotion opportunities in government service'
+      'Central government salary and allowances',
+      'Career progression opportunities',
+      'Job security and pension benefits as per rules'
     ],
     applicationProcess: [
-      { step: 1, description: 'Register on SSC official website' },
-      { step: 2, description: 'Fill application form and pay fees' },
-      { step: 3, description: 'Appear for Tier-1 written exam' },
-      { step: 4, description: 'Clear Tier-2 exam and interview' }
+      { step: 1, description: 'Register on SSC official portal' },
+      { step: 2, description: 'Complete online application for CGL' },
+      { step: 3, description: 'Appear for tier-based examinations' },
+      { step: 4, description: 'Complete document verification after final merit' }
     ],
-    officialLink: 'https://ssc.nic.in',
-    applicationLink: 'https://ssc.nic.in/Portal/Apply',
+    officialLink: 'https://ssc.gov.in',
+    applicationLink: 'https://ssc.gov.in',
     duration: 'Permanent',
-    amount: 'INR 35,400-1,12,400/month',
-    lastDate: '30th November 2024',
+    amount: 'As per notified post pay level',
+    lastDate: 'As per SSC notification',
     featured: true
   },
-  
   {
-    name: "Skill India Training Program",
-    description: "Free skill development training program for unemployed youth across various sectors",
-    category: "Training Program",
+    name: 'UPSC Civil Services Examination',
+    description: 'Union Public Service Commission examination for recruitment to IAS, IPS, IFS and other central civil services.',
+    category: 'Govt Job',
     eligibility: {
-      education: ['10th', '12th', 'Diploma'],
-      categories: ['SC', 'ST', 'OBC', 'EWS'],
-      income: '1-3L',
-      states: ['All India'],
-      age: { min: 18, max: 35 },
-      gender: 'Any',
-      locationType: 'Any',
-      firstGraduate: 'Any'
-    },
-    benefits: [
-      'Free training with certification',
-      'Placement assistance',
-      'Stipend during training period'
-    ],
-    applicationProcess: [
-      { step: 1, description: 'Visit nearest Skill India center' },
-      { step: 2, description: 'Submit required documents' },
-      { step: 3, description: 'Choose training course' },
-      { step: 4, description: 'Start training program' }
-    ],
-    officialLink: 'https://skillindia.gov.in',
-    applicationLink: 'https://skillindia.gov.in/participant',
-    duration: '3-6 months',
-    amount: 'INR 5,000-8,000 stipend',
-    lastDate: 'Rolling admissions',
-    featured: false
-  },
-  
-  {
-    name: "National Fellowship for SC Students",
-    description: "Fellowship for SC students pursuing higher education in professional courses",
-    category: "Scholarship",
-    eligibility: {
-      education: ['Postgraduate'],
-      categories: ['SC'],
-      income: 'Any',
-      states: ['All India'],
-      age: { min: 22, max: 35 },
-      gender: 'Any',
-      locationType: 'Any',
-      firstGraduate: 'Any'
-    },
-    benefits: [
-      'Fellowship amount of INR 25,000/month',
-      'Contingency allowance of INR 15,000/year',
-      'Research support and mentorship'
-    ],
-    applicationProcess: [
-      { step: 1, description: 'Apply through National Scholarship Portal' },
-      { step: 2, description: 'Submit research proposal' },
-      { step: 3, description: 'Upload academic and caste certificates' },
-      { step: 4, description: 'Selection committee review' }
-    ],
-    officialLink: 'https://socialjustice.nic.in',
-    applicationLink: 'https://scholarships.gov.in/main',
-    duration: '3 years',
-    amount: 'INR 25,000/month',
-    lastDate: '15th December 2024',
-    featured: true
-  },
-  
-  {
-    name: "State Government IT Jobs",
-    description: "Various IT positions in state government departments and public sector undertakings",
-    category: "Govt Job",
-    eligibility: {
-      education: ['Undergraduate', 'Postgraduate', 'Diploma'],
+      education: ['Undergraduate', 'Postgraduate'],
       categories: ['General', 'OBC', 'SC', 'ST', 'EWS'],
       income: 'Any',
-      states: ['Maharashtra', 'Karnataka', 'Tamil Nadu', 'Delhi'],
-      age: { min: 21, max: 38 },
+      states: ['All India'],
+      age: { min: 21, max: 32 },
       gender: 'Any',
-      locationType: 'Urban',
+      locationType: 'Any',
       firstGraduate: 'Any'
     },
     benefits: [
-      'Salary range INR 35,000-80,000/month',
-      'State government benefits',
-      'Work-life balance and job security'
+      'Prestigious civil service career',
+      'Structured promotions and training',
+      'Government salary and benefits as per cadre rules'
     ],
     applicationProcess: [
-      { step: 1, description: 'Check state government job portal' },
-      { step: 2, description: 'Apply online with required documents' },
-      { step: 3, description: 'Written examination' },
-      { step: 4, description: 'Interview and document verification' }
+      { step: 1, description: 'Register on UPSC online application portal' },
+      { step: 2, description: 'Submit CSE application form' },
+      { step: 3, description: 'Appear in Prelims, Mains and Interview' },
+      { step: 4, description: 'Join service based on final rank and preference' }
     ],
-    officialLink: 'https://www.india.gov.in',
-    applicationLink: 'https://employmentnews.gov.in',
+    officialLink: 'https://upsc.gov.in',
+    applicationLink: 'https://upsconline.nic.in',
     duration: 'Permanent',
-    amount: 'INR 35,000-80,000/month',
-    lastDate: 'Varies by state',
-    featured: false
+    amount: 'As per central pay matrix',
+    lastDate: 'As per UPSC notification',
+    featured: true
   },
-  
   {
-    name: "Women Entrepreneurship Program",
-    description: "Special training and funding program for women entrepreneurs in rural areas",
-    category: "Training Program",
+    name: 'Pradhan Mantri Kaushal Vikas Yojana (PMKVY)',
+    description: 'Flagship skill development initiative under Skill India for short-term training and recognition of prior learning.',
+    category: 'Training Program',
     eligibility: {
       education: ['10th', '12th', 'Diploma', 'Undergraduate'],
       categories: ['General', 'OBC', 'SC', 'ST', 'EWS'],
-      income: '3-5L',
-      states: ['Rajasthan', 'Madhya Pradesh', 'Uttar Pradesh', 'Bihar'],
+      income: 'Any',
+      states: ['All India'],
       age: { min: 18, max: 45 },
-      gender: 'Female',
-      locationType: 'Rural',
+      gender: 'Any',
+      locationType: 'Any',
       firstGraduate: 'Any'
     },
     benefits: [
-      'Free business training',
-      'Seed funding up to INR 50,000',
-      'Mentorship and networking'
+      'Industry-relevant skill training',
+      'Certification aligned to NSQF',
+      'Placement and career support in selected sectors'
     ],
     applicationProcess: [
-      { step: 1, description: 'Register on women entrepreneurship portal' },
-      { step: 2, description: 'Submit business idea proposal' },
-      { step: 3, description: 'Interview and selection' },
-      { step: 4, description: 'Start training program' }
+      { step: 1, description: 'Locate nearest PMKVY training center' },
+      { step: 2, description: 'Choose job-role specific training program' },
+      { step: 3, description: 'Complete training and assessment' },
+      { step: 4, description: 'Receive certification and placement support' }
     ],
-    officialLink: 'https://womenentrepreneur.gov.in',
-    applicationLink: 'https://wep.gov.in/apply',
-    duration: '3 months',
-    amount: 'INR 50,000 seed funding',
-    lastDate: '20th November 2024',
-    featured: true
+    officialLink: 'https://www.skillindia.gov.in',
+    applicationLink: 'https://www.skillindia.gov.in',
+    duration: '2 to 6 months',
+    amount: 'Program specific support',
+    lastDate: 'Rolling intake by center',
+    featured: false
+  },
+  {
+    name: 'National Career Service Skill and Employment Support',
+    description: 'Employment and skilling support ecosystem under National Career Service with job matching, counseling, and training linkage.',
+    category: 'Training Program',
+    eligibility: {
+      education: ['10th', '12th', 'Diploma', 'Undergraduate', 'Postgraduate'],
+      categories: ['General', 'OBC', 'SC', 'ST', 'EWS'],
+      income: 'Any',
+      states: ['All India'],
+      age: { min: 18, max: 50 },
+      gender: 'Any',
+      locationType: 'Any',
+      firstGraduate: 'Any'
+    },
+    benefits: [
+      'Access to government employment exchange services',
+      'Career counseling and job fairs',
+      'Linkage to skilling and apprenticeship opportunities'
+    ],
+    applicationProcess: [
+      { step: 1, description: 'Create job seeker profile on NCS portal' },
+      { step: 2, description: 'Complete education, skills and location details' },
+      { step: 3, description: 'Apply to listed vacancies and services' },
+      { step: 4, description: 'Attend counseling or placement events as scheduled' }
+    ],
+    officialLink: 'https://www.ncs.gov.in',
+    applicationLink: 'https://www.ncs.gov.in',
+    duration: 'Ongoing',
+    amount: 'Service based',
+    lastDate: 'Open throughout the year',
+    featured: false
   }
 ];
 
@@ -249,9 +339,9 @@ const seedSchemes = async () => {
       active: true
     }));
     
-    // Insert dummy schemes
+    // Insert real schemes
     const result = await Scheme.insertMany(schemesWithActive);
-    console.log(`✓ Inserted ${result.length} dummy schemes successfully`);
+    console.log(`✓ Inserted ${result.length} real schemes successfully`);
     
     // Verify insertion
     const count = await Scheme.countDocuments({ active: true });
