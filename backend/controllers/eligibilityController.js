@@ -1,5 +1,23 @@
 const Scheme = require('../models/Scheme');
 
+const SCHEME_CATEGORY_MAP = {
+  scholarship: 'Scholarship',
+  internship: 'Internship',
+  'govt job': 'Govt Job',
+  'government job': 'Govt Job',
+  'training program': 'Training Program'
+};
+
+const normalizePreferredCategories = (lookingFor = []) => {
+  if (!Array.isArray(lookingFor)) return [];
+
+  const normalized = lookingFor
+    .map((value) => SCHEME_CATEGORY_MAP[String(value || '').trim().toLowerCase()])
+    .filter(Boolean);
+
+  return [...new Set(normalized)];
+};
+
 // Income level mapping
 const incomeMapping = {
   '<1L': { min: 0, max: 100000 },
@@ -139,9 +157,22 @@ const getEligibleSchemes = async (req, res) => {
 
     console.log('User profile found, checking eligibility...');
 
-    // Get all active schemes
-    const schemes = await Scheme.find({ active: true });
-    console.log(`Found ${schemes.length} active schemes`);
+    const preferredCategories = normalizePreferredCategories(profile.lookingFor);
+    const schemeFilter = { active: true };
+
+    // If user selected "Looking For", restrict to those categories only.
+    if (preferredCategories.length > 0) {
+      schemeFilter.category = { $in: preferredCategories };
+    }
+
+    const schemes = await Scheme.find(schemeFilter);
+    console.log(
+      `Found ${schemes.length} active schemes${
+        preferredCategories.length > 0
+          ? ` for categories: ${preferredCategories.join(', ')}`
+          : ''
+      }`
+    );
     
     if (schemes.length === 0) {
       console.log('No active schemes found - need to seed data');
@@ -161,7 +192,8 @@ const getEligibleSchemes = async (req, res) => {
       success: true,
       schemes: eligibleSchemes,
       totalSchemes: schemes.length,
-      eligibleCount: eligibleSchemes.length
+      eligibleCount: eligibleSchemes.length,
+      appliedCategoryFilter: preferredCategories
     });
   } catch (error) {
     console.error('Eligibility check error:', error.message);
@@ -187,9 +219,21 @@ const checkTempEligibility = async (req, res) => {
       });
     }
 
-    // Get all active schemes
-    const schemes = await Scheme.find({ active: true });
-    console.log(`Found ${schemes.length} active schemes`);
+    const preferredCategories = normalizePreferredCategories(tempProfile.lookingFor);
+    const schemeFilter = { active: true };
+
+    if (preferredCategories.length > 0) {
+      schemeFilter.category = { $in: preferredCategories };
+    }
+
+    const schemes = await Scheme.find(schemeFilter);
+    console.log(
+      `Found ${schemes.length} active schemes${
+        preferredCategories.length > 0
+          ? ` for categories: ${preferredCategories.join(', ')}`
+          : ''
+      }`
+    );
     
     if (schemes.length === 0) {
       console.log('No active schemes found - need to seed data');
@@ -209,7 +253,8 @@ const checkTempEligibility = async (req, res) => {
       success: true,
       schemes: eligibleSchemes,
       totalSchemes: schemes.length,
-      eligibleCount: eligibleSchemes.length
+      eligibleCount: eligibleSchemes.length,
+      appliedCategoryFilter: preferredCategories
     });
   } catch (error) {
     console.error('Temporary eligibility check error:', error.message);
