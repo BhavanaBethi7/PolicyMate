@@ -1,5 +1,39 @@
 const axios = require('axios');
 
+// Helper function to call AI API (Groq or OpenAI)
+const callAIAPI = async (messages, maxTokens = 500) => {
+  const useGroq = !!process.env.GROQ_API_KEY;
+  
+  if (!useGroq && !process.env.OPENAI_API_KEY) {
+    throw new Error('Neither GROQ_API_KEY nor OPENAI_API_KEY is configured');
+  }
+
+  const apiUrl = useGroq 
+    ? 'https://api.groq.com/openai/v1/chat/completions'
+    : 'https://api.openai.com/v1/chat/completions' || 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.0-flash:generateContent?key=' ;
+  
+  const apiKey = useGroq ? process.env.GROQ_API_KEY : process.env.OPENAI_API_KEY || process.env.GEMINI_API_KEY;
+  const model = useGroq ? 'llama-3.3-70b-versatile' : 'gpt-3.5-turbo' || 'gemini-3.0-flash';
+
+  const response = await axios.post(
+    apiUrl,
+    {
+      model,
+      messages,
+      max_tokens: maxTokens,
+      temperature: messages[0]?.temperature || 0.5
+    },
+    {
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json'
+      }
+    }
+  );
+
+  return response.data.choices[0].message.content;
+};
+
 // Parse user text input into structured profile data
 const parseProfileText = async (req, res) => {
   try {
@@ -17,7 +51,7 @@ Parse the following user information into a structured JSON profile. Extract onl
 
 User text: "${text}"
 
-Return a JSON object with these exact fields:
+Return ONLY a JSON object with these exact fields (no markdown, no code blocks):
 {
   "name": "full name if mentioned",
   "age": "age as number if mentioned", 
@@ -33,35 +67,26 @@ Return a JSON object with these exact fields:
 Only return the JSON object, no additional text.
 `;
 
-    const response = await axios.post(
-      'https://api.openai.com/v1/chat/completions',
+    const messages = [
       {
-        model: 'gpt-3.5-turbo',
-        messages: [
-          {
-            role: 'system',
-            content: 'You are a data extraction assistant. Parse user input into structured JSON format.'
-          },
-          {
-            role: 'user',
-            content: prompt
-          }
-        ],
-        max_tokens: 500,
-        temperature: 0.1
+        role: 'system',
+        content: 'You are a data extraction assistant. Parse user input into structured JSON format. Return ONLY valid JSON, no markdown.'
       },
       {
-        headers: {
-          'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-          'Content-Type': 'application/json'
-        }
+        role: 'user',
+        content: prompt,
+        temperature: 0.1
       }
-    );
+    ];
 
-    const aiResponse = response.data.choices[0].message.content;
+    const aiResponse = await callAIAPI(messages, 500);
     
     try {
-      const parsedProfile = JSON.parse(aiResponse);
+      const cleanedResponse = aiResponse
+        .replace(/```json\n?/g, '')
+        .replace(/```\n?/g, '')
+        .trim();
+      const parsedProfile = JSON.parse(cleanedResponse);
       
       res.status(200).json({
         success: true,
@@ -69,24 +94,34 @@ Only return the JSON object, no additional text.
       });
     } catch (parseError) {
       console.error('Error parsing AI response:', parseError);
+      console.log('Raw response:', aiResponse);
       res.status(500).json({
         success: false,
-        message: 'Failed to parse AI response'
+        message: 'Failed to parse AI response',
+        error: parseError.message
       });
     }
   } catch (error) {
-    console.error('AI parsing error:', error);
+    console.error('AI parsing error:', error.message);
+    
+    if (error.response?.status === 429) {
+      return res.status(429).json({
+        success: false,
+        message: 'API rate limit exceeded'
+      });
+    }
     
     if (error.response?.status === 401) {
-      return res.status(500).json({
+      return res.status(401).json({
         success: false,
-        message: 'AI service configuration error'
+        message: 'Invalid API key - check GROQ_API_KEY or OPENAI_API_KEY'
       });
     }
     
     res.status(500).json({
       success: false,
-      message: 'Server error while processing AI request'
+      message: 'Server error while processing AI request',
+      error: error.message
     });
   }
 };
@@ -131,50 +166,45 @@ Scheme Details:
 Provide the explanation in a clear, encouraging tone. Focus on the positive matches.
 `;
 
-    const response = await axios.post(
-      'https://api.openai.com/v1/chat/completions',
+    const messages = [
       {
-        model: 'gpt-3.5-turbo',
-        messages: [
-          {
-            role: 'system',
-            content: 'You are a helpful assistant explaining government scheme eligibility. Be encouraging and clear.'
-          },
-          {
-            role: 'user',
-            content: prompt
-          }
-        ],
-        max_tokens: 300,
-        temperature: 0.7
+        role: 'system',
+        content: 'You are a helpful assistant explaining government scheme eligibility. Be encouraging and clear.'
       },
       {
-        headers: {
-          'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-          'Content-Type': 'application/json'
-        }
+        role: 'user',
+        content: prompt,
+        temperature: 0.7
       }
-    );
+    ];
 
-    const explanation = response.data.choices[0].message.content;
+    const explanation = await callAIAPI(messages, 300);
     
     res.status(200).json({
       success: true,
       explanation
     });
   } catch (error) {
-    console.error('AI explanation error:', error);
+    console.error('AI explanation error:', error.message);
+    
+    if (error.response?.status === 429) {
+      return res.status(429).json({
+        success: false,
+        message: 'API rate limit exceeded'
+      });
+    }
     
     if (error.response?.status === 401) {
-      return res.status(500).json({
+      return res.status(401).json({
         success: false,
-        message: 'AI service configuration error'
+        message: 'Invalid API key'
       });
     }
     
     res.status(500).json({
       success: false,
-      message: 'Server error while generating explanation'
+      message: 'Server error while generating explanation',
+      error: error.message
     });
   }
 };
@@ -208,50 +238,45 @@ ${schemesContext}
 Provide a clear, informative answer. If the question is about specific schemes mentioned above, focus on those. If you don't have enough information, suggest what additional details would be helpful.
 `;
 
-    const response = await axios.post(
-      'https://api.openai.com/v1/chat/completions',
+    const messages = [
       {
-        model: 'gpt-3.5-turbo',
-        messages: [
-          {
-            role: 'system',
-            content: 'You are a knowledgeable assistant about government schemes and opportunities in India. Provide accurate, helpful information.'
-          },
-          {
-            role: 'user',
-            content: prompt
-          }
-        ],
-        max_tokens: 400,
-        temperature: 0.5
+        role: 'system',
+        content: 'You are a knowledgeable assistant about government schemes and opportunities in India. Provide accurate, helpful information.'
       },
       {
-        headers: {
-          'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-          'Content-Type': 'application/json'
-        }
+        role: 'user',
+        content: prompt,
+        temperature: 0.5
       }
-    );
+    ];
 
-    const answer = response.data.choices[0].message.content;
+    const answer = await callAIAPI(messages, 400);
     
     res.status(200).json({
       success: true,
       answer
     });
   } catch (error) {
-    console.error('AI query error:', error);
+    console.error('AI query error:', error.message);
+    
+    if (error.response?.status === 429) {
+      return res.status(429).json({
+        success: false,
+        message: 'API rate limit exceeded'
+      });
+    }
     
     if (error.response?.status === 401) {
-      return res.status(500).json({
+      return res.status(401).json({
         success: false,
-        message: 'AI service configuration error'
+        message: 'Invalid API key'
       });
     }
     
     res.status(500).json({
       success: false,
-      message: 'Server error while processing query'
+      message: 'Server error while processing query',
+      error: error.message
     });
   }
 };

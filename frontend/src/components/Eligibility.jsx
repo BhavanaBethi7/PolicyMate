@@ -1,13 +1,32 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+
+const INDIAN_STATES = [
+  "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", "Goa", "Gujarat", 
+  "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka", "Kerala", "Madhya Pradesh", 
+  "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab", 
+  "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura", "Uttar Pradesh", 
+  "Uttarakhand", "West Bengal", "Andaman and Nicobar Islands", "Chandigarh", 
+  "Dadra and Nagar Haveli and Daman and Diu", "Delhi", "Jammu and Kashmir", 
+  "Ladakh", "Lakshadweep", "Puducherry"
+];
 
 export default function Eligibility() {
   const [schemes, setSchemes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [selectedScheme, setSelectedScheme] = useState(null);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   const navigate = useNavigate();
+
+  const [filters, setFilters] = useState({
+    category: "All",
+    state: "All",
+    minMatch: 0,
+    searchQuery: "",
+    hasFinancialAid: false,
+  });
 
   useEffect(() => {
     fetchEligibleSchemes();
@@ -21,7 +40,7 @@ export default function Eligibility() {
         return;
       }
 
-      const response = await axios.get('/api/eligibility/my-schemes', {
+      const response = await axios.get('/api/ai/ai-enhanced', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -39,6 +58,35 @@ export default function Eligibility() {
       setLoading(false);
     }
   };
+
+  const filteredSchemes = useMemo(() => {
+    return schemes.filter((item) => {
+      const scheme = item.scheme;
+      if (!scheme) return false;
+
+      const rawStates = scheme.eligibility?.states;
+      const schemeStates = (Array.isArray(rawStates) ? rawStates : rawStates ? [rawStates] : [])
+        .map(s => String(s).trim().toLowerCase());
+
+      const selectedState = filters.state.toLowerCase().trim();
+      
+      let matchesState = false;
+      if (filters.state === "All") {
+        matchesState = true; 
+      } else if (filters.state === "All India") {
+        matchesState = schemeStates.includes("all india");
+      } else {
+        matchesState = schemeStates.includes(selectedState);
+      }
+
+      const matchesCategory = filters.category === "All" || scheme.category === filters.category;
+      const matchesSearch = (scheme.name || "").toLowerCase().includes(filters.searchQuery.toLowerCase());
+      const matchesMatch = (item.matchPercentage || 0) >= filters.minMatch;
+      const matchesMoney = !filters.hasFinancialAid || (scheme.amount && scheme.amount.toLowerCase() !== "n/a");
+
+      return matchesState && matchesCategory && matchesSearch && matchesMatch && matchesMoney;
+    });
+  }, [schemes, filters]);
 
   const getMatchColor = (percentage) => {
     if (percentage >= 80) return 'bg-green-500';
@@ -90,22 +138,142 @@ export default function Eligibility() {
   }
 
   return (
-    <div className="min-h-screen px-6 py-10 bg-gradient-to-br from-slate-50 via-white to-blue-50">
-      
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50">
       {/* Header */}
-      <div className="max-w-6xl mx-auto mb-8">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">
-          Your Eligible Schemes
-        </h1>
-        <p className="text-gray-600 text-lg">
-          Found {schemes.length} schemes that match your profile
-        </p>
+      <div className="sticky top-0 z-40 bg-white border-b border-slate-200 px-6 py-4 shadow-sm">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">Your Eligible Schemes</h1>
+            <p className="text-gray-600 text-sm mt-1">{filteredSchemes.length} schemes found</p>
+          </div>
+          <button
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            className="lg:hidden p-2 hover:bg-slate-100 rounded-lg transition"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
       </div>
 
-      {/* Schemes Grid */}
-      <div className="max-w-6xl mx-auto space-y-6">
-        
-        {schemes.length === 0 ? (
+      {/* Main Container */}
+      <div className="flex min-h-[calc(100vh-80px)]">
+        {/* Sidebar */}
+        <div
+          className={`${
+            sidebarOpen ? 'w-72' : 'w-0'
+          } bg-white border-r border-slate-200 overflow-hidden transition-all duration-300 ease-in-out lg:w-72 shadow-lg`}
+        >
+          <div className="p-6 h-full overflow-y-auto">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-lg font-bold text-gray-900">Filters</h2>
+              <button
+                onClick={() => setSidebarOpen(false)}
+                className="lg:hidden p-1 hover:bg-slate-100 rounded"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            <div className="space-y-6">
+              {/* Search */}
+              <div>
+                <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Search</label>
+                <input 
+                  type="text"
+                  placeholder="Scheme name..."
+                  value={filters.searchQuery}
+                  onChange={(e) => setFilters({...filters, searchQuery: e.target.value})}
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-100 rounded-lg focus:bg-white focus:border-blue-300 outline-none text-sm"
+                />
+              </div>
+
+              {/* State Filter */}
+              <div>
+                <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Region</label>
+                <select 
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-100 rounded-lg focus:bg-white focus:border-blue-300 outline-none cursor-pointer text-sm"
+                  value={filters.state}
+                  onChange={(e) => setFilters({...filters, state: e.target.value})}
+                >
+                  <option value="All">Any Region</option>
+                  <option value="All India">Central Government</option>
+                  <optgroup label="States / UTs">
+                    {INDIAN_STATES.map(s => <option key={s} value={s}>{s}</option>)}
+                  </optgroup>
+                </select>
+              </div>
+
+              {/* Category Filter */}
+              <div>
+                <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Type</label>
+                <div className="space-y-2">
+                  {["All", "Scholarship", "Internship", "Govt Job", "Training Program"].map(cat => (
+                    <button
+                      key={cat}
+                      onClick={() => setFilters({...filters, category: cat})}
+                      className={`w-full px-3 py-2 rounded-lg font-medium text-sm transition text-left ${
+                        filters.category === cat 
+                          ? 'bg-blue-600 text-white' 
+                          : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                      }`}
+                    >
+                      {cat}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Match Percentage Slider */}
+              <div>
+                <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">
+                  Min. Match: <span className="text-blue-600">{filters.minMatch}%</span>
+                </label>
+                <input 
+                  type="range" 
+                  min="0" 
+                  max="90" 
+                  value={filters.minMatch}
+                  onChange={(e) => setFilters({...filters, minMatch: parseInt(e.target.value)})}
+                  className="w-full accent-blue-600"
+                />
+                <div className="flex justify-between text-xs text-slate-400 mt-2">
+                  <span>0%</span>
+                  <span>90%</span>
+                </div>
+              </div>
+
+              {/* Financial Aid Checkbox */}
+              <label className="flex items-center gap-3 cursor-pointer p-3 bg-slate-50 rounded-lg hover:bg-slate-100 transition">
+                <input 
+                  type="checkbox"
+                  checked={filters.hasFinancialAid}
+                  onChange={(e) => setFilters({...filters, hasFinancialAid: e.target.checked})}
+                  className="w-4 h-4 cursor-pointer"
+                />
+                <span className="text-sm font-medium text-gray-700">Financial Aid Only</span>
+              </label>
+
+              {/* Reset Button */}
+              <button
+                onClick={() => setFilters({category: 'All', state: 'All', minMatch: 0, searchQuery: '', hasFinancialAid: false})}
+                className="w-full px-4 py-2 text-sm font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition border border-blue-200"
+              >
+                Clear Filters
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Main Content */}
+        <div className="flex-1 px-6 py-8 overflow-y-auto">
+
+        {/* Schemes Grid */}
+      <div className="max-w-4xl space-y-6">
+        {filteredSchemes.length === 0 ? (
           <div className="bg-white rounded-2xl shadow p-8 text-center">
             <div className="text-gray-400 mb-4">
               <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -126,15 +294,17 @@ export default function Eligibility() {
             </button>
           </div>
         ) : (
-          schemes.map((item, index) => (
+          filteredSchemes.map((item, index) => (
             <div key={index} className="bg-white rounded-2xl shadow hover:shadow-lg transition-shadow duration-200">
-              
               {/* Scheme Header */}
               <div className="p-6 border-b border-gray-100">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
-                      <span className={`px-3 py-1 rounded-full text-white text-sm font-medium ${getMatchColor(item.matchPercentage)}`}>
+                      <span className="px-3 py-1 bg-blue-100 rounded-full text-blue-800 text-sm font-medium">
+                        AI Matched
+                      </span>
+                      <span className="px-3 py-1 bg-green-100 rounded-full text-green-800 text-sm font-medium">
                         {item.matchPercentage}% Match
                       </span>
                       <span className="px-3 py-1 bg-gray-100 rounded-full text-gray-700 text-sm font-medium">
@@ -159,7 +329,6 @@ export default function Eligibility() {
               {/* Scheme Details */}
               <div className="p-6">
                 <div className="grid md:grid-cols-2 gap-6 mb-6">
-                  
                   {/* Benefits */}
                   <div>
                     <h4 className="font-semibold text-gray-900 mb-3">Benefits</h4>
@@ -175,27 +344,26 @@ export default function Eligibility() {
                     </ul>
                   </div>
 
-                  {/* Eligibility Info */}
+                  {/* AI Explanation */}
                   <div>
-                    <h4 className="font-semibold text-gray-900 mb-3">Why You're Eligible</h4>
-                    <ul className="space-y-2">
-                      {item.details.slice(0, 3).map((detail, idx) => (
-                        <li key={idx} className="flex items-start gap-2">
-                          <svg className="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-                          </svg>
-                          <span className="text-gray-600 text-sm">{detail}</span>
-                        </li>
-                      ))}
-                    </ul>
+                    <h4 className="font-semibold text-gray-900 mb-3">AI Analysis</h4>
+                    <div className="text-gray-600 text-sm whitespace-pre-line">
+                      {item.aiExplanation ? (
+                        <div>
+                          <p>{item.aiExplanation}</p>
+                        </div>
+                      ) : (
+                        <p>AI analysis not available</p>
+                      )}
+                    </div>
                   </div>
                 </div>
 
                 {/* Action Buttons */}
-                <div className="flex gap-4">
+                <div className="flex justify-center gap-4">
                   <button
                     onClick={() => setSelectedScheme(item.scheme)}
-                    className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+                    className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
                   >
                     View Details
                   </button>
@@ -204,7 +372,7 @@ export default function Eligibility() {
                       href={item.scheme.applicationLink}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex-1 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition text-center"
+                      className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition text-center"
                     >
                       Apply Now
                     </a>
@@ -214,6 +382,8 @@ export default function Eligibility() {
             </div>
           ))
         )}
+      </div>
+        </div>
       </div>
 
       {/* Scheme Details Modal */}

@@ -4,7 +4,6 @@ const port=process.env.PORT || 5000;
 const connectDB=require('./config/dbconfig');
 const authRoutes=require('./routes/authRoutes');
 const profileRoutes=require('./routes/profileRoutes');
-const eligibilityRoutes=require('./routes/eligibilityRoutes');
 const aiRoutes=require('./routes/aiRoutes');
 const cors=require('cors');
 const dotenv=require('dotenv');
@@ -34,7 +33,6 @@ app.use((req, res, next) => {
 
 app.use('/api/auth', authRoutes);
 app.use('/api/profile', profileRoutes);
-app.use('/api/eligibility', eligibilityRoutes);
 app.use('/api/ai', aiRoutes);
 
 app.get('/',(req,res)=>{

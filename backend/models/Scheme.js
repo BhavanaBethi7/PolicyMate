@@ -18,16 +18,13 @@ const schemeSchema = new mongoose.Schema({
   // Eligibility Criteria
   eligibility: {
     education: [{
-      type: String,
-      enum: ['10th', '12th', 'Diploma', 'Undergraduate', 'Postgraduate']
+      type: String
     }],
     categories: [{
-      type: String,
-      enum: ['General', 'OBC', 'SC', 'ST', 'EWS']
+      type: String
     }],
     income: {
-      type: String,
-      enum: ['<1L', '1-3L', '3-5L', '5-8L', '8L+', 'Any']
+      type: String
     },
     states: [{
       type: String
@@ -37,16 +34,13 @@ const schemeSchema = new mongoose.Schema({
       max: Number
     },
     gender: {
-      type: String,
-      enum: ['Male', 'Female', 'Any']
+      type: String
     },
     locationType: {
-      type: String,
-      enum: ['Urban', 'Rural', 'Any']
+      type: String
     },
     firstGraduate: {
-      type: String,
-      enum: ['Yes', 'No', 'Any']
+      type: String
     }
   },
   

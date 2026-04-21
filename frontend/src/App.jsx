@@ -4,8 +4,8 @@ import Register from './components/register';
 import Landing from './components/landing';
 import Home from './components/Home';
 import Profile from './components/Profile';
-import Eligibility from './components/eligibility';
-import Check from './components/check';
+import Eligibility from './components/Eligibility';
+import Check from './components/Check';
 
 import './index.css';
 
