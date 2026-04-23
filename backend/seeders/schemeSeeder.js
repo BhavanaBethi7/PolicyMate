@@ -1,5 +1,6 @@
 const Scheme = require('../models/Scheme');
 const mongoose = require('mongoose');
+require('dotenv').config();
 
 const Schemes = [
   {
@@ -912,8 +913,26 @@ const Schemes = [
 
 const seedSchemes = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/PolicyMate');
-    console.log('Connected to MongoDB');
+    const options = {
+      serverSelectionTimeoutMS: 5000,
+      socketTimeoutMS: 45000,
+      maxPoolSize: 10,
+      minPoolSize: 2,
+      maxIdleTimeMS: 30000,
+    };
+
+    // Add retry writes and read preferences for Atlas
+    if (process.env.MONGO_URI && process.env.MONGO_URI.includes('mongodb.net')) {
+      options.retryWrites = true;
+      options.readPreference = 'primaryPreferred';
+      options.writeConcern = {
+        w: 'majority',
+        j: true
+      };
+    }
+
+    await mongoose.connect(process.env.MONGO_URI, options);
+    console.log('Connected to MongoDB Atlas');
     
     // Clear existing schemes
     await Scheme.deleteMany({});
