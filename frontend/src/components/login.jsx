@@ -23,7 +23,7 @@ export default function Login() {
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/auth/login",
+        "/api/auth/login",
         form
       );
 
@@ -62,7 +62,7 @@ export default function Login() {
   const handleGoogleSuccess = async (credentialResponse) => {
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/auth/google-login",
+        "/api/auth/google-login",
         {
           tokenId: credentialResponse.credential
         }

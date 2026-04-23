@@ -8,7 +8,7 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
-      - key: MONGODB_URI
+      - key: MONGO_URI
         sync: false
       - key: JWT_SECRET
         sync: false
@@ -26,3 +26,5 @@ services:
     envVars:
       - key: VITE_API_URL
         value: https://policymate-backend.onrender.com
+      - key: VITE_GOOGLE_CLIENT_ID
+        sync: false
