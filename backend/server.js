@@ -5,6 +5,7 @@ const connectDB=require('./config/dbconfig');
 const authRoutes=require('./routes/authRoutes');
 const profileRoutes=require('./routes/profileRoutes');
 const aiRoutes=require('./routes/aiRoutes');
+const adminRoutes=require('./routes/adminRoutes');
 const cors=require('cors');
 const dotenv=require('dotenv');
 
@@ -34,6 +35,7 @@ app.use((req, res, next) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/profile', profileRoutes);
 app.use('/api/ai', aiRoutes);
+app.use('/api/admin', adminRoutes);
 
 app.get('/',(req,res)=>{
     res.send('Welcome to PolicyMate API');

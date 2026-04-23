@@ -6,6 +6,7 @@ import Home from './components/Home';
 import Profile from './components/Profile';
 import Eligibility from './components/Eligibility';
 import Check from './components/Check';
+import AdminDashboard from './components/AdminDashboard';
 
 import './index.css';
 
@@ -20,6 +21,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/eligibility" element={<Eligibility />} />
         <Route path="/check" element={<Check />} />
+        <Route path="/admin" element={<AdminDashboard />} />
       </Routes>
     </Router>
   );
