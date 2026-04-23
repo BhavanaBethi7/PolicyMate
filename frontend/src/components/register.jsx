@@ -46,14 +46,16 @@ export default function Register() {
       {/* Card */}
       <div className="relative bg-white/90 backdrop-blur-xl border border-white/20 rounded-3xl shadow-2xl w-[420px] overflow-hidden transform transition-all duration-500 hover:shadow-3xl">
 
-        {/* 🇮🇳 Enhanced TOP STRIP */}
+        {/* Enhanced TOP STRIP */}
         <div className="h-2 w-full bg-gradient-to-r from-green-500 via-white to-blue-500"></div>
 
         <div className="p-10">
 
           <div className="text-center mb-8">
             <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl mb-4">
-              <span className="text-white text-2xl">✨</span>
+              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+              </svg>
             </div>
             <h2 className="text-3xl font-bold text-gray-900 mb-2">
               Create Account
@@ -136,15 +138,21 @@ export default function Register() {
           <div className="mt-8 pt-6 border-t border-gray-100">
             <div className="space-y-3">
               <div className="flex items-center gap-2 text-sm text-gray-600">
-                <span className="text-green-500">✓</span>
+                <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                </svg>
                 <span>Free forever - No hidden charges</span>
               </div>
               <div className="flex items-center gap-2 text-sm text-gray-600">
-                <span className="text-green-500">✓</span>
+                <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                </svg>
                 <span>Access to 500+ government schemes</span>
               </div>
               <div className="flex items-center gap-2 text-sm text-gray-600">
-                <span className="text-green-500">✓</span>
+                <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                </svg>
                 <span>AI-powered eligibility matching</span>
               </div>
             </div>
