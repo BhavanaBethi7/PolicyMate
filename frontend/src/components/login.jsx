@@ -125,7 +125,7 @@ export default function Login() {
                 placeholder="Enter your email"
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:ring-2 focus:ring-blue-400 focus:border-blue-400 outline-none transition-all duration-200 hover:border-gray-300"
+                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 outline-none transition-all duration-200 hover:border-gray-300 bg-white"
               />
             </div>
 
@@ -137,7 +137,7 @@ export default function Login() {
                 placeholder="Enter your password"
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:ring-2 focus:ring-blue-400 focus:border-blue-400 outline-none transition-all duration-200 hover:border-gray-300"
+                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 outline-none transition-all duration-200 hover:border-gray-300 bg-white"
               />
             </div>
 
@@ -171,13 +171,13 @@ export default function Login() {
           </div>
 
           {/* Enhanced Footer */}
-          <div className="mt-8 text-center">
+          <div className="mt-8 text-center space-y-4">
             <p className="text-gray-600">
-              Don't have an account?{" "}
-              <Link to="/register" className="btn-secondary w-full py-4 text-center text-lg">
-                Create Account
-              </Link>
+              Don't have an account?
             </p>
+            <Link to="/register" className="btn-secondary w-full py-4 text-center text-lg">
+              Create Account
+            </Link>
           </div>
 
           {/* Trust indicators */}
