@@ -258,7 +258,9 @@ const AdminDashboard = () => {
       <div className="bg-white/80 backdrop-blur-xl border border-white/20 rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
         <div className="flex items-center justify-between mb-6">
           <div className="w-16 h-16 bg-gradient-to-r from-orange-400 to-amber-500 rounded-2xl flex items-center justify-center">
-            <span className="text-white text-2xl">👥</span>
+            <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
           </div>
           <span className="text-4xl font-black text-gray-900">{stats.totalUsers}</span>
         </div>
@@ -269,7 +271,9 @@ const AdminDashboard = () => {
       <div className="bg-white/80 backdrop-blur-xl border border-white/20 rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
         <div className="flex items-center justify-between mb-6">
           <div className="w-16 h-16 bg-gradient-to-r from-blue-400 to-blue-500 rounded-2xl flex items-center justify-center">
-            <span className="text-white text-2xl">🎯</span>
+            <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+            </svg>
           </div>
           <span className="text-4xl font-black text-gray-900">{stats.totalSchemes}</span>
         </div>
@@ -280,7 +284,9 @@ const AdminDashboard = () => {
       <div className="bg-white/80 backdrop-blur-xl border border-white/20 rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
         <div className="flex items-center justify-between mb-6">
           <div className="w-16 h-16 bg-gradient-to-r from-yellow-400 to-amber-500 rounded-2xl flex items-center justify-center">
-            <span className="text-white text-2xl">📝</span>
+            <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
           </div>
           <span className="text-4xl font-black text-gray-900">{stats.activeApplications}</span>
         </div>
@@ -291,7 +297,9 @@ const AdminDashboard = () => {
       <div className="bg-white/80 backdrop-blur-xl border border-white/20 rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
         <div className="flex items-center justify-between mb-6">
           <div className="w-16 h-16 bg-gradient-to-r from-purple-400 to-purple-500 rounded-2xl flex items-center justify-center">
-            <span className="text-white text-2xl">📈</span>
+            <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            </svg>
           </div>
           <span className="text-4xl font-black text-gray-900">{stats.recentRegistrations}</span>
         </div>
@@ -306,7 +314,9 @@ const AdminDashboard = () => {
       <div className="px-8 py-6 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-indigo-50">
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center">
-            <span className="text-white text-xl">👥</span>
+            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
           </div>
           <h3 className="text-2xl font-bold text-gray-900">User Management</h3>
         </div>
@@ -360,7 +370,9 @@ const AdminDashboard = () => {
                   <td colSpan="4" className="px-6 py-12 text-center">
                     <div className="flex flex-col items-center gap-4">
                       <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
-                        <span className="text-2xl">📭</span>
+                        <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                        </svg>
                       </div>
                       <p className="text-gray-500 font-medium">No users found</p>
                     </div>
@@ -380,7 +392,9 @@ const AdminDashboard = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center">
-              <span className="text-white text-xl">🎯</span>
+              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+              </svg>
             </div>
             <h3 className="text-2xl font-bold text-gray-900">Scheme Management</h3>
           </div>
@@ -389,7 +403,9 @@ const AdminDashboard = () => {
             className="group bg-gradient-to-r from-green-500 to-emerald-600 text-white px-6 py-3 rounded-xl font-bold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 relative overflow-hidden"
           >
             <span className="relative z-10 flex items-center gap-2">
-              <span>➕</span>
+              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              </svg>
               <span>Add New Scheme</span>
             </span>
             <div className="absolute inset-0 bg-gradient-to-r from-green-600 to-emerald-600 transform translate-y-full group-hover:translate-y-0 transition-transform duration-200"></div>
@@ -433,7 +449,7 @@ const AdminDashboard = () => {
                           : 'bg-gradient-to-r from-red-100 to-pink-100 text-red-800 hover:from-red-200 hover:to-pink-200'
                       }`}
                     >
-                      {scheme.active ? '✓ Active' : '✗ Inactive'}
+                      {scheme.active ? 'Active' : 'Inactive'}
                     </button>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -459,7 +475,9 @@ const AdminDashboard = () => {
                   <td colSpan="5" className="px-6 py-12 text-center">
                     <div className="flex flex-col items-center gap-4">
                       <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
-                        <span className="text-2xl">📭</span>
+                        <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                        </svg>
                       </div>
                       <p className="text-gray-500 font-medium">No schemes found</p>
                     </div>
@@ -481,7 +499,9 @@ const AdminDashboard = () => {
           <div className="flex justify-between items-center py-6">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center">
-                <span className="text-white text-xl">🎛️</span>
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+              </svg>
               </div>
               <div>
                 <h1 className="text-3xl font-black text-gray-900">Admin Dashboard</h1>
@@ -490,7 +510,9 @@ const AdminDashboard = () => {
             </div>
             <Link to="/login" className="group bg-gradient-to-r from-red-500 to-pink-600 text-white px-6 py-3 rounded-xl font-bold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 relative overflow-hidden">
               <span className="relative z-10 flex items-center gap-2">
-                <span>🚪</span>
+                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
                 <span>Logout</span>
               </span>
               <div className="absolute inset-0 bg-gradient-to-r from-red-600 to-pink-600 transform translate-y-full group-hover:translate-y-0 transition-transform duration-200"></div>
@@ -511,7 +533,9 @@ const AdminDashboard = () => {
                     : 'text-gray-600 hover:bg-gray-100'
                 }`}
               >
-                <span className="text-xl">📊</span>
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
                 <span>Overview</span>
               </button>
               <button
@@ -711,7 +735,7 @@ const AdminDashboard = () => {
                 <div className="bg-gray-50 p-3 rounded-lg">
                   <p className="text-xs text-gray-500 uppercase">Status</p>
                   <p className="text-sm font-semibold text-gray-900 mt-1">
-                    {selectedScheme.active ? '✓ Active' : '✗ Inactive'}
+                    {selectedScheme.active ? 'Active' : 'Inactive'}
                   </p>
                 </div>
                 <div className="bg-gray-50 p-3 rounded-lg">
