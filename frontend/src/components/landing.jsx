@@ -4,7 +4,7 @@ export default function Landing() {
   const navigate = useNavigate();
 
   return (
-    <div className="h-screen relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50 flex items-center justify-center px-6 py-8">
+    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50 flex items-center justify-center px-6 py-8">
 
       {/* Enhanced animated background elements */}
       <div className="absolute top-[-200px] left-[-200px] w-[500px] h-[500px] bg-gradient-to-r from-blue-400/20 to-indigo-500/20 blur-3xl rounded-full animate-pulse"></div>
@@ -30,9 +30,11 @@ export default function Landing() {
               </span>
             </div>
             
-            <h1 className="text-3xl lg:text-5xl font-black text-gray-900 leading-tight tracking-tight">
-              Discover the Right
-              <span className="block bg-gradient-to-r from-blue-600 via-purple-600 to-emerald-600 bg-clip-text text-transparent mt-2">
+            <h1 className="text-4xl lg:text-6xl font-bold leading-tight tracking-tight">
+              <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-emerald-600 bg-clip-text text-transparent">
+                Discover the Right
+              </span>
+              <span className="block text-gray-900 mt-2">
                 Government Schemes
               </span>
             </h1>
@@ -46,20 +48,19 @@ export default function Landing() {
           <div className="flex flex-col sm:flex-row gap-3">
             <button
               onClick={() => navigate("/login")}
-              className="group relative px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl font-bold text-base shadow-2xl hover:shadow-3xl transform hover:-translate-y-1 transition-all duration-300 overflow-hidden"
+              className="btn-primary text-lg px-8 py-4"
             >
-              <span className="relative z-10 flex items-center gap-2">
+              <span className="flex items-center gap-2">
                 <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
                 <span>Get Started</span>
               </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-700 to-indigo-700 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
-            </button>
+              </button>
 
             <button
               onClick={() => navigate("/register")}
-              className="group px-8 py-4 bg-white border-2 border-gray-200 text-gray-700 rounded-2xl font-bold text-base hover:border-blue-500 hover:text-blue-600 hover:bg-blue-50 transition-all duration-300 transform hover:-translate-y-1 shadow-lg hover:shadow-xl"
+              className="btn-secondary text-lg px-8 py-4"
             >
               <span className="flex items-center gap-2">
                 <svg className="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">

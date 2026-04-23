@@ -37,17 +37,17 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-6 bg-gradient-to-br from-indigo-50 via-white to-cyan-50 relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center px-6 bg-gradient-to-br from-slate-50 via-white to-blue-50 relative overflow-hidden">
       
       {/* Background decoration */}
       <div className="absolute top-[-100px] right-[-100px] w-[300px] h-[300px] bg-gradient-to-r from-green-200 to-emerald-300 opacity-20 blur-3xl rounded-full"></div>
       <div className="absolute bottom-[-100px] left-[-100px] w-[300px] h-[300px] bg-gradient-to-r from-blue-200 to-indigo-300 opacity-20 blur-3xl rounded-full"></div>
 
       {/* Card */}
-      <div className="relative bg-white/90 backdrop-blur-xl border border-white/20 rounded-3xl shadow-2xl w-[420px] overflow-hidden transform transition-all duration-500 hover:shadow-3xl">
+      <div className="card-glass w-[420px] max-w-full">
 
         {/* Enhanced TOP STRIP */}
-        <div className="h-2 w-full bg-gradient-to-r from-green-500 via-white to-blue-500"></div>
+        <div className="h-2 w-full bg-gradient-to-r from-green-500 via-white to-blue-500 rounded-t-2xl"></div>
 
         <div className="p-10">
 
@@ -106,11 +106,11 @@ export default function Register() {
             </div>
 
             <button
+              type="submit"
               disabled={loading}
-              className="group w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white py-3.5 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none relative overflow-hidden"
+              className="btn-primary w-full py-4 text-lg"
             >
-              <span className="relative z-10">{loading ? "Creating account..." : "Create Account"}</span>
-              <div className="absolute inset-0 bg-gradient-to-r from-green-700 to-emerald-700 transform translate-y-full group-hover:translate-y-0 transition-transform duration-200"></div>
+              {loading ? "Creating account..." : "Create Account"}
             </button>
           </form>
 
